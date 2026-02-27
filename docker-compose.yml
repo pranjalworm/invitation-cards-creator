@@ -11,8 +11,9 @@ services:
       timeout: 3s
       retries: 5
 
-  app:
+  api:
     build: .
+    command: pnpm run server
     ports:
       - "3000:3000"
     env_file: .env
@@ -22,8 +23,19 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./output:/app/output
       - ./sample-template.html:/app/sample-template.html:ro
+
+  worker:
+    build: .
+    command: pnpm run worker
+    env_file: .env
+    environment:
+      - REDIS_HOST=redis
+    depends_on:
+      redis:
+        condition: service_healthy
+    volumes:
+      - ./output:/app/output
 
 volumes:
   redis-data:

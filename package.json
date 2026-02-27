@@ -3,12 +3,13 @@
   "version": "1.0.0",
   "type": "module",
   "description": "Generate personalized invitation cards",
-  "main": "start.js",
+  "main": "start.ts",
   "scripts": {
-    "render": "node --env-file=.env render.js",
-    "start": "node --env-file=.env start.js",
-    "server": "node --env-file=.env server.js",
-    "worker": "node --env-file=.env worker.js",
+    "render": "tsx --env-file=.env render.ts",
+    "start": "tsx --env-file=.env start.ts",
+    "server": "tsx --env-file=.env server.ts",
+    "worker": "tsx --env-file=.env worker.ts",
+    "typecheck": "tsc --noEmit",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,5 +20,11 @@
     "bullmq": "^5.30.1",
     "express": "^4.21.2",
     "puppeteer": "^24.37.5"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.3.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3"
   }
 }

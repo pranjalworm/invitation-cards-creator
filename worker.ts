@@ -1,5 +1,15 @@
-import { Worker } from "bullmq";
+import { Worker, type Job } from "bullmq";
 import { renderCard, closeBrowser } from "./render.js";
+
+interface RenderJobData {
+  templateHtml: string;
+  guestName: string;
+  outputDir: string;
+}
+
+interface RenderJobResult {
+  outputPath: string;
+}
 
 const REDIS_HOST = process.env.REDIS_HOST || "localhost";
 const REDIS_PORT = parseInt(process.env.REDIS_PORT || "6379", 10);
@@ -7,9 +17,9 @@ const CONCURRENCY = parseInt(process.env.WORKER_CONCURRENCY || "2", 10);
 
 const connection = { host: REDIS_HOST, port: REDIS_PORT };
 
-const worker = new Worker(
+const worker = new Worker<RenderJobData, RenderJobResult>(
   "render",
-  async (job) => {
+  async (job: Job<RenderJobData>) => {
     console.log(`Processing job ${job.id}: ${job.data.guestName}`);
     const { templateHtml, guestName, outputDir } = job.data;
     const outputPath = await renderCard(templateHtml, guestName, outputDir);
@@ -20,11 +30,11 @@ const worker = new Worker(
 );
 
 worker.on("failed", (job, err) => {
-  console.error(`Job ${job.id} failed:`, err.message);
+  console.error(`Job ${job?.id} failed:`, err.message);
 });
 
 // Graceful shutdown
-async function shutdown() {
+async function shutdown(): Promise<void> {
   console.log("Shutting down worker...");
   await worker.close();
   await closeBrowser();

@@ -1,12 +1,11 @@
-import puppeteer from "puppeteer";
+import puppeteer, { type Browser } from "puppeteer";
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
 
 // Shared browser instance
-let _browser = null;
+let _browser: Browser | null = null;
 
-async function getBrowser() {
+async function getBrowser(): Promise<Browser> {
   if (!_browser) {
     _browser = await puppeteer.launch({
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
@@ -15,7 +14,7 @@ async function getBrowser() {
   return _browser;
 }
 
-export async function closeBrowser() {
+export async function closeBrowser(): Promise<void> {
   if (_browser) {
     await _browser.close();
     _browser = null;
@@ -25,7 +24,11 @@ export async function closeBrowser() {
 /**
  * Render a single invitation card PNG.
  */
-export async function renderCard(templateHtml, guestName, outputDir) {
+export async function renderCard(
+  templateHtml: string,
+  guestName: string,
+  outputDir: string
+): Promise<string> {
   const absOutputDir = path.resolve(outputDir);
   fs.mkdirSync(absOutputDir, { recursive: true });
 
@@ -55,7 +58,11 @@ export async function renderCard(templateHtml, guestName, outputDir) {
 /**
  * Render cards for all guests in a CSV file (batch/CLI mode).
  */
-export async function renderAllCards(templatePath, guestsPath, outputDir) {
+export async function renderAllCards(
+  templatePath: string,
+  guestsPath: string,
+  outputDir: string
+): Promise<void> {
   const absoluteTemplatePath = path.resolve(templatePath);
   const templateHtml = fs.readFileSync(absoluteTemplatePath, "utf-8");
 
@@ -77,8 +84,10 @@ export async function renderAllCards(templatePath, guestsPath, outputDir) {
 }
 
 // CLI entry point
-const __filename = fileURLToPath(import.meta.url);
-if (process.argv[1] === __filename) {
+const isMain = process.argv[1] &&
+  (process.argv[1].endsWith("render.ts") || process.argv[1].includes("render.ts"));
+
+if (isMain) {
   const template = process.argv[2] || process.env.TEMPLATE_PATH || "sample-template.html";
   const guests = process.argv[3] || process.env.GUESTS_PATH || "guests.csv";
   const outputDir = process.argv[4] || process.env.OUTPUT_DIR || "output";

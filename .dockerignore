@@ -3,5 +3,6 @@ output
 .git
 .DS_Store
 .claude
+dist
 docker-compose.yml
 README.md

@@ -79,8 +79,8 @@ export async function renderAllCards(templatePath, guestsPath, outputDir) {
 // CLI entry point
 const __filename = fileURLToPath(import.meta.url);
 if (process.argv[1] === __filename) {
-  const template = process.argv[2] || "sample-template.html";
-  const guests = process.argv[3] || "guests.csv";
-  const outputDir = process.argv[4] || "output";
+  const template = process.argv[2] || process.env.TEMPLATE_PATH || "sample-template.html";
+  const guests = process.argv[3] || process.env.GUESTS_PATH || "guests.csv";
+  const outputDir = process.argv[4] || process.env.OUTPUT_DIR || "output";
   renderAllCards(template, guests, outputDir);
 }

@@ -9,6 +9,8 @@ app.use(express.json());
 const REDIS_HOST = process.env.REDIS_HOST || "localhost";
 const REDIS_PORT = parseInt(process.env.REDIS_PORT || "6379", 10);
 const PORT = parseInt(process.env.PORT || "3000", 10);
+const TEMPLATE_PATH = process.env.TEMPLATE_PATH || "sample-template.html";
+const OUTPUT_DIR = process.env.OUTPUT_DIR || "output";
 
 const connection = { host: REDIS_HOST, port: REDIS_PORT };
 const renderQueue = new Queue("render", { connection });
@@ -25,7 +27,7 @@ app.post("/render", async (req, res) => {
 
   let html = templateHtml;
   if (!html) {
-    const tplPath = path.resolve(templatePath || "sample-template.html");
+    const tplPath = path.resolve(templatePath || TEMPLATE_PATH);
     if (!fs.existsSync(tplPath)) {
       return res.status(400).json({ error: `Template not found: ${tplPath}` });
     }
@@ -37,7 +39,7 @@ app.post("/render", async (req, res) => {
     const job = await renderQueue.add("render-card", {
       templateHtml: html,
       guestName,
-      outputDir: "output",
+      outputDir: OUTPUT_DIR,
     });
     jobs.push({ id: job.id, guestName });
   }

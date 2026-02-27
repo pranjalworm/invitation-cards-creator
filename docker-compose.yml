@@ -15,11 +15,9 @@ services:
     build: .
     ports:
       - "3000:3000"
+    env_file: .env
     environment:
       - REDIS_HOST=redis
-      - REDIS_PORT=6379
-      - PORT=3000
-      - WORKER_CONCURRENCY=2
     depends_on:
       redis:
         condition: service_healthy

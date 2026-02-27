@@ -5,10 +5,10 @@
   "description": "Generate personalized invitation cards",
   "main": "start.js",
   "scripts": {
-    "render": "node render.js",
-    "start": "node start.js",
-    "server": "node server.js",
-    "worker": "node worker.js",
+    "render": "node --env-file=.env render.js",
+    "start": "node --env-file=.env start.js",
+    "server": "node --env-file=.env server.js",
+    "worker": "node --env-file=.env worker.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

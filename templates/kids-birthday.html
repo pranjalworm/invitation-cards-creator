@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dino Birthday Bash</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Nunito:wght@400;600;700&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #e8f5e9;
+        font-family: 'Nunito', sans-serif;
+        padding: 2rem;
+      }
+
+      .card {
+        position: relative;
+        width: 704px;
+        aspect-ratio: 1408 / 768;
+        background-image: url('assets/backgrounds/dinos.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 5rem 8rem;
+        overflow: hidden;
+      }
+
+      .card-title {
+        font-family: 'Bubblegum Sans', cursive;
+        font-size: 2.4rem;
+        color: #4a7c3f;
+        line-height: 1.1;
+        margin-bottom: 0.15rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.8rem;
+        font-weight: 700;
+        color: #e65100;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        margin-bottom: 0.8rem;
+      }
+
+      .greeting {
+        font-size: 0.95rem;
+        color: #5d4037;
+      }
+
+      .guest-name {
+        font-family: 'Bubblegum Sans', cursive;
+        font-size: 1.6rem;
+        color: #e65100;
+        margin-bottom: 0.6rem;
+      }
+
+      .message {
+        font-size: 0.85rem;
+        color: #5d4037;
+        line-height: 1.6;
+        margin-bottom: 0.8rem;
+        max-width: 400px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 0.8rem;
+        flex-wrap: wrap;
+      }
+
+      .detail-item {
+        text-align: center;
+      }
+
+      .detail-label {
+        display: block;
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        color: #8d6e63;
+        margin-bottom: 0.15rem;
+      }
+
+      .detail-value {
+        font-family: 'Bubblegum Sans', cursive;
+        font-size: 0.95rem;
+        color: #4a7c3f;
+      }
+
+      .hosted-by {
+        font-size: 0.7rem;
+        color: #8d6e63;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        margin-bottom: 0.1rem;
+      }
+
+      .hosts {
+        font-family: 'Bubblegum Sans', cursive;
+        font-size: 1.1rem;
+        color: #5d4037;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1 class="card-title">Dino Birthday Bash!</h1>
+      <p class="card-subtitle">You're Invited</p>
+
+      <p class="greeting">Dear</p>
+      <p class="guest-name">{{guestName}}</p>
+
+      <p class="message">
+{{message}}
+      </p>
+
+      <div class="details">
+        <div class="detail-item">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{eventDate}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Time</span>
+          <span class="detail-value">{{time}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Venue</span>
+          <span class="detail-value">{{venue}}</span>
+        </div>
+      </div>
+
+      <p class="hosted-by">Hosted by</p>
+      <p class="hosts">{{hostName}}</p>
+    </div>
+  </body>
+</html>

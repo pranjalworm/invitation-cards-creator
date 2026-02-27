@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Baby Shower Invitation</title>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Lora:wght@400;500;700&display=swap');
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #fdf6e3;
+        font-family: 'Lora', Georgia, serif;
+        padding: 2rem;
+      }
+
+      .card {
+        position: relative;
+        width: 704px;
+        aspect-ratio: 1408 / 768;
+        background-image: url('assets/backgrounds/animals.png');
+        background-size: cover;
+        background-position: center;
+        border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 4.5rem 8rem;
+        overflow: hidden;
+      }
+
+      .flourish {
+        color: #d4a017;
+        font-size: 1.2rem;
+        letter-spacing: 0.4rem;
+        margin-bottom: 0.3rem;
+      }
+
+      .card-title {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: #8b6914;
+        line-height: 1.2;
+        margin-bottom: 0.1rem;
+      }
+
+      .card-subtitle {
+        font-size: 0.8rem;
+        color: #a1887f;
+        text-transform: uppercase;
+        letter-spacing: 0.2rem;
+        margin-bottom: 0.7rem;
+      }
+
+      .divider {
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4a017, transparent);
+        margin: 0 auto 0.7rem;
+      }
+
+      .greeting {
+        font-size: 0.9rem;
+        color: #5d4037;
+      }
+
+      .guest-name {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #3e2723;
+        margin-bottom: 0.5rem;
+      }
+
+      .message {
+        font-size: 0.8rem;
+        color: #5d4037;
+        line-height: 1.7;
+        margin-bottom: 0.7rem;
+        max-width: 380px;
+      }
+
+      .details {
+        display: flex;
+        justify-content: center;
+        gap: 2rem;
+        margin-bottom: 0.7rem;
+        flex-wrap: wrap;
+      }
+
+      .detail-item {
+        text-align: center;
+      }
+
+      .detail-label {
+        display: block;
+        font-size: 0.6rem;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        color: #a1887f;
+        margin-bottom: 0.15rem;
+      }
+
+      .detail-value {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-size: 0.9rem;
+        font-weight: 700;
+        color: #8b6914;
+      }
+
+      .divider-bottom {
+        width: 50px;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #d4a017, transparent);
+        margin: 0 auto 0.5rem;
+      }
+
+      .hosted-by {
+        font-size: 0.7rem;
+        color: #a1887f;
+        text-transform: uppercase;
+        letter-spacing: 0.12rem;
+        margin-bottom: 0.1rem;
+      }
+
+      .hosts {
+        font-family: 'Playfair Display', Georgia, serif;
+        font-style: italic;
+        font-size: 1.1rem;
+        color: #3e2723;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <div class="flourish">&#10022; &#10022; &#10022;</div>
+      <h1 class="card-title">Baby Shower</h1>
+      <p class="card-subtitle">You're Invited</p>
+
+      <div class="divider"></div>
+
+      <p class="greeting">Dear</p>
+      <p class="guest-name">{{guestName}}</p>
+
+      <p class="message">
+{{message}}
+      </p>
+
+      <div class="details">
+        <div class="detail-item">
+          <span class="detail-label">Date</span>
+          <span class="detail-value">{{eventDate}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Time</span>
+          <span class="detail-value">{{time}}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Venue</span>
+          <span class="detail-value">{{venue}}</span>
+        </div>
+      </div>
+
+      <div class="divider-bottom"></div>
+
+      <p class="hosted-by">Hosted by</p>
+      <p class="hosts">{{hostName}}</p>
+    </div>
+  </body>
+</html>

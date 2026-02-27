@@ -4,7 +4,6 @@
   "type": "module",
   "description": "Generate personalized invitation cards",
   "scripts": {
-    "render": "tsx render.ts",
     "server": "tsx server.ts",
     "worker": "tsx worker.ts",
     "typecheck": "tsc --noEmit",

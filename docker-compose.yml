@@ -23,7 +23,7 @@ services:
       redis:
         condition: service_healthy
     volumes:
-      - ./sample-template.html:/app/sample-template.html:ro
+      - ./templates:/app/templates:ro
 
   worker:
     build: .

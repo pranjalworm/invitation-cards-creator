@@ -35,4 +35,6 @@ COPY . .
 # Create output directory
 RUN mkdir -p output
 
-CMD ["pnpm", "render"]
+EXPOSE 3000
+
+CMD ["pnpm", "start"]

@@ -1,55 +1,86 @@
-const puppeteer = require("puppeteer");
-const path = require("path");
-const fs = require("fs");
+import puppeteer from "puppeteer";
+import path from "path";
+import fs from "fs";
+import { fileURLToPath } from "url";
 
-async function renderAllCards(templatePath, guestsPath, outputDir) {
+// Shared browser instance
+let _browser = null;
+
+async function getBrowser() {
+  if (!_browser) {
+    _browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
+    });
+  }
+  return _browser;
+}
+
+export async function closeBrowser() {
+  if (_browser) {
+    await _browser.close();
+    _browser = null;
+  }
+}
+
+/**
+ * Render a single invitation card PNG.
+ */
+export async function renderCard(templateHtml, guestName, outputDir) {
+  const absOutputDir = path.resolve(outputDir);
+  fs.mkdirSync(absOutputDir, { recursive: true });
+
+  const browser = await getBrowser();
+  const page = await browser.newPage();
+  await page.setViewport({ width: 800, height: 600, deviceScaleFactor: 3 });
+
+  const html = templateHtml.replace("{{guestName}}", guestName);
+  await page.setContent(html, { waitUntil: "domcontentloaded" });
+  await page.evaluateHandle("document.fonts.ready");
+
+  const filename = guestName.toLowerCase().replace(/\s+/g, "-") + ".png";
+  const outputPath = path.join(absOutputDir, filename);
+
+  const cardElement = await page.$(".card");
+  if (cardElement) {
+    await cardElement.screenshot({ path: outputPath, type: "png" });
+  } else {
+    await page.screenshot({ path: outputPath, fullPage: true });
+  }
+
+  await page.close();
+  console.log(`Saved: ${outputPath}`);
+  return outputPath;
+}
+
+/**
+ * Render cards for all guests in a CSV file (batch/CLI mode).
+ */
+export async function renderAllCards(templatePath, guestsPath, outputDir) {
   const absoluteTemplatePath = path.resolve(templatePath);
   const templateHtml = fs.readFileSync(absoluteTemplatePath, "utf-8");
 
-  // Parse guest names from CSV (skip header row)
   const csv = fs.readFileSync(path.resolve(guestsPath), "utf-8");
   const names = csv
     .split("\n")
     .map((line) => line.trim())
     .filter(Boolean)
-    .slice(1); // skip "name" header
-
-  // Ensure output directory exists
-  const absOutputDir = path.resolve(outputDir);
-  fs.mkdirSync(absOutputDir, { recursive: true });
-
-  const browser = await puppeteer.launch({
-    args: ["--no-sandbox", "--disable-setuid-sandbox"],
-  });
-  const page = await browser.newPage();
-  await page.setViewport({ width: 800, height: 600, deviceScaleFactor: 3 });
+    .slice(1);
 
   for (const name of names) {
-
-    const html = templateHtml.replace("{{guestName}}", name);
-
-    await page.setContent(html, { waitUntil: "domcontentloaded" });
-    await page.evaluateHandle("document.fonts.ready");
-
-    const filename = name.toLowerCase().replace(/\s+/g, "-") + ".png";
-    const outputPath = path.join(absOutputDir, filename);
-
-    const cardElement = await page.$(".card");
-    if (cardElement) {
-      await cardElement.screenshot({ path: outputPath, type: "png" });
-    } else {
-      await page.screenshot({ path: outputPath, fullPage: true });
-    }
-
-    console.log(`Saved: ${outputPath}`);
+    await renderCard(templateHtml, name, outputDir);
   }
 
-  await browser.close();
-  console.log(`\nDone! Generated ${names.length} invitation cards in ${absOutputDir}`);
+  await closeBrowser();
+  console.log(
+    `\nDone! Generated ${names.length} invitation cards in ${path.resolve(outputDir)}`
+  );
 }
 
-const template = process.argv[2] || "sample-template.html";
-const guests = process.argv[3] || "guests.csv";
-const outputDir = process.argv[4] || "output";
-
-renderAllCards(template, guests, outputDir);
+// CLI entry point
+const __filename = fileURLToPath(import.meta.url);
+if (process.argv[1] === __filename) {
+  const template = process.argv[2] || "sample-template.html";
+  const guests = process.argv[3] || "guests.csv";
+  const outputDir = process.argv[4] || "output";
+  renderAllCards(template, guests, outputDir);
+}

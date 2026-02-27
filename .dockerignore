@@ -3,3 +3,5 @@ output
 .git
 .DS_Store
 .claude
+docker-compose.yml
+README.md

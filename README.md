@@ -32,7 +32,13 @@ curl -X POST http://localhost:3000/render \
   -H "Content-Type: application/json" \
   -d '{
     "templatePath": "templates/kids-birthday.html",
-    "guests": ["Aarav Sharma", "Priya Patel", "Rohan Gupta"]
+    "guests": ["Vikram Singh", "Shivani Singh"],
+    "title": "Wedding Anniversary!!!",
+    "eventDate": "04 May 2026",
+    "time": "6:00 pm",
+    "message": "Welcome to our 4th Wedding Anniversary",
+    "venue": "Berlin",
+    "hostName": "Aishwarya & Pranjal"
   }'
 ```
 
